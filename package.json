@@ -1,0 +1,60 @@
+{
+  "name": "vue_code_electron",
+  "version": "1.0.5",
+  "description": "一个基于electron项目模板",
+  "license": "",
+  "scripts": {
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder",
+    "dist-mac": "yarn compile && electron-builder --mac -c.compression=store"
+  },
+  "build": {
+    "appId": "com.appid.www",
+    "productName": "程序名称",
+    "win": {
+      "icon": "build/windows/icon.ico",
+      "artifactName": "程序名称_建议不要出现中文_win_setup.${ext}"
+    },
+    "nsis": {
+      "deleteAppDataOnUninstall": true
+    },
+    "mac": {
+      "icon": "build/mac/mac-icon.icns",
+      "artifactName": "程序名称_建议不要出现中文_mac_setup.${ext}",
+      "target": [
+        "dir",
+        "pkg"
+      ],
+      "type": "development",
+      "hardenedRuntime": true,
+      "extendInfo": {
+        "NSCameraUsageDescription": "请允许使用摄像头",
+        "NSMicrophoneUsageDescription": "请允许使用麦克风"
+      },
+      "entitlements": "build/mac/entitlements.mac.plist"
+    },
+    "pkg": {
+      "installLocation": "/Applications",
+      "allowAnywhere": false,
+      "allowCurrentUserHome": true,
+      "allowRootDirectory": true,
+      "isRelocatable": false
+    }
+  },
+  "dependencies": {
+    "source-map-support": "^0.5.16",
+    "vue": "^2.6.10",
+    "vue-router": "^3.1.3"
+  },
+  "devDependencies": {
+    "electron": "8.2.0",
+    "electron-builder": "^22.4.1",
+    "electron-webpack": "^2.8.2",
+    "electron-webpack-vue": "^2.4.0",
+    "sass": "^1.26.3",
+    "sass-loader": "^8.0.2",
+    "webpack": "~4.42.1",
+    "yarn": "^1.22.4"
+  }
+}
