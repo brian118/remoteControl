@@ -1,20 +1,22 @@
 <template>
     <el-row>
         <el-col :span="24">
-            <div v-if="!controlText" class="grid-content">
-                <el-form ref="form" :model="form" label-width="120px">
-                    <el-form-item label="你的控制码">
-                        <span @contextmenu="handleContextMenu">{{form.lcoalCode}}</span>
-                    </el-form-item>
-                    <el-form-item label="伙伴ID">
-                        <el-input v-model="form.remoteCode"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="startControl">确认</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
-            <div v-else>{{controlText}}</div>
+            <form  @submit.prevent="startControl">
+                <div v-if="!controlText" class="grid-content">
+                    <el-form ref="form" :model="form" label-width="120px">
+                        <el-form-item label="你的控制码">
+                            <span @contextmenu="handleContextMenu">{{form.lcoalCode}}</span>
+                        </el-form-item>
+                        <el-form-item label="伙伴ID">
+                            <el-input v-model="form.remoteCode"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="startControl">确认</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+                <div v-else>{{controlText}}</div>
+            </form>
         </el-col>
     </el-row>
 </template>
@@ -22,6 +24,8 @@
 <script>
 import { ipcRenderer, remote } from 'electron'
 const { Menu, MenuItem } = remote
+const path = require('path')
+import { format as formatUrl } from 'url'
 import './peer-puppet.js'
 // // Move the mouse across the screen as a sine wave.
 // const robot = require("robotjs");
@@ -63,7 +67,9 @@ export default {
             this.form.lcoalCode = code
         },
         startControl(){
-            ipcRenderer.send('control', this.form.remoteCode)
+            const queryAndHash = '?#/controlWin'
+            const url = location.origin + location.pathname + queryAndHash
+            ipcRenderer.send('control', this.form.remoteCode , url)
         },
         handleControlState(){
             //监听主进程发来的消息

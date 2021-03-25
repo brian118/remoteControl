@@ -1,5 +1,4 @@
 import {desktopCapturer , ipcRenderer} from 'electron'
-console.log(12321312)
 //响应控制端，创建answer -创建视频流addstream
 // 获取视频流
 async function getScreenStream() {

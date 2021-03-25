@@ -18,17 +18,17 @@ export function handleIPC() {
     })
   
     //接受控制码 向服务器发起交互，发送需要被控制的傀儡账号
-    ipcMain.on('control' , async (e , remote) =>{
-        console.log("本地的remote",remote)
-        signal.send('control' , {remote})
+    ipcMain.on('control' , async (e , remote , url) =>{
+        console.log("本地的remote",remote , url)
+        signal.send('control' , {remote,url} )
     })
 
 
     //接收event响应事件 - 连接用户
     signal.on('controlled',(data) =>{
         //通知当前主窗口状态改变 , 创建控制窗口
+        createControlWindow(data.url)
         sendMainWindow('control-state-change',data.remote , 1)
-        createControlWindow()
     })
 
     //接收event响应事件 - 被连接

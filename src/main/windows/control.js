@@ -3,38 +3,36 @@ import isDev from 'electron-is-dev'
 import { format as formatUrl } from 'url'
 import path from 'path'
 
-let win
+let winControl
 
-export function create(){
-    win = new BrowserWindow({
+export function create(redirectUrl = ""){
+    winControl = new BrowserWindow({
         width:1000,
         height:680,
         webPreferences: { nodeIntegration: true, webSecurity: false },
         center: true,
     })
-
-
     if (isDev) {
         const url = `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}#/controlWin`
-        win.loadURL(url)
+        winControl.loadURL(url)
     } else {
-        win.loadURL(formatUrl({
-          pathname: path.join(__dirname, 'index.html#/controlWin'),
-          protocol: 'file',
-          slashes: true
-        }))
+        //file:///C:/Users/baichengwei.DACHEN/AppData/Local/Programs/vue_code_electron/resources/app.asar/index.html?#/\controlWin"
+        //file:///C:/Users/baichengwei.DACHEN/AppData/Local/Programs/vue_code_electron/resources/app.asar/index.html?#/controlWin
+        //winControl.loadURL(path.join(__dirname, 'index.html?#/controlWin'))
+        winControl.loadURL(redirectUrl)
     }
 
-    win.on('closed', () => {
+    winControl.on('closed', () => {
         console.log("关闭")
-        // win.webContents.send('close')
-        // win = null
+        winControl = null;
+        // winControl.webContents.send('close')
+        // winControl = null
         // ipcMain.on('close' , async (e , remote) =>{
         //     console.log("本地的remote",remote)
         //     signal.send('control' , {remote})
         // })
 
-        // win.webContents.send('close-win')
+        // winControl.webContents.send('close-win')
 
         // ipcMain.on('close-win', function(event, arg) {
         //     // console.log(arg);  // prints "ping"
@@ -44,5 +42,5 @@ export function create(){
 }
 
 export function send(channel, ...args) {
-    win.webContents.send(channel, ...args)
+    winControl.webContents.send(channel, ...args)
 }

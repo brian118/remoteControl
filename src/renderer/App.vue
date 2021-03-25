@@ -7,6 +7,7 @@
 <script>
 import { remote } from 'electron'
 // import path from 'path'
+const si = require('systeminformation')
 
 const currentWindow = remote.getCurrentWindow()
 const isMacOS = process.platform === 'darwin'
@@ -29,7 +30,10 @@ export default {
       root.classList.add(OS)
     }
   },
-  created () {
+  async created () {
+    const system = await si.system();
+
+    console.log("system",system)
     this.addOSClass()
   }
 }

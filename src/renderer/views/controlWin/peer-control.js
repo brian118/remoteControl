@@ -2,6 +2,18 @@ const EventEmitter = require('events')
 const peer = new EventEmitter()
 const {ipcRenderer} = require('electron')
 
+//打洞服务配置
+// const iceServer = {
+//     "iceServers": [{
+//         "urls" : ["stun:stun.l.google.com:19302"]
+//     }, {
+//         "urls" : ["turn:numb.viagenie.ca"],
+//         "username" : "webrtc@live.com",
+//         "credential" : "muazkh"
+//     }]
+// };
+
+//如果不穿入打洞服务器的配置信息，则只可以在内网中使用实时音频通讯。
 const pc = new window.RTCPeerConnection({})
 //createDataChannel() 方法创建一个可以发送任意数据的数据通道(data channel)。
 //常用于后台传输内容, 例如: 图像, 文件传输, 聊天文字, 游戏数据更新包, 等等。

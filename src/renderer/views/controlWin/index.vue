@@ -1,5 +1,5 @@
 <template>
-    <div style="height:100%">
+    <div style="height:100%;background:#000">
         <!-- 渲染进程页面 -->
         <video id="screen-video"></video>
     </div>
@@ -15,19 +15,22 @@ export default {
         return {}
     },
     created(){
-        this.init()
+        //创建 offer
+        createOffer().then((offer) =>{
+            ipcRenderer.send('forward','offer',{
+                type:offer.type,
+                sdp:offer.sdp
+            })
+        })
+        this.$nextTick(() =>{
+            this.init()
+        })
     },
     methods:{
         //初始化
         init(){
             const videoTag = document.getElementById('screen-video')
-            //创建 offer
-            createOffer().then((offer) =>{
-                ipcRenderer.send('forward','offer',{
-                    type:offer.type,
-                    sdp:offer.sdp
-                })
-            })
+            
 
             peer.on('add-stream', stream =>{
                 this.paly(stream)
@@ -54,8 +57,6 @@ export default {
                 data.clientY = e.clientY
                 const videoWidth = videoTag.getBoundingClientRect().width
                 const videoHeight = videoTag.getBoundingClientRect().height
-                console.log("videoWidth",videoWidth)
-                console.log("videoHeight",videoHeight)
                 data.video = {
                     //控制端的真实宽高
                     width:videoWidth,
@@ -66,23 +67,21 @@ export default {
             })
 
             //监听鼠标移动事件
-            document.addEventListener('mousemove',(e) =>{
-                let data = {}
-                //获取当前屏幕的实际 x y
-                data.clientX = e.clientX
-                data.clientY = e.clientY
-                const videoWidth = videoTag.getBoundingClientRect().width
-                const videoHeight = videoTag.getBoundingClientRect().height
-                console.log("videoWidth",videoWidth)
-                console.log("videoHeight",videoHeight)
-                data.video = {
-                    //控制端的真实宽高
-                    width:videoWidth,
-                    height:videoHeight
-                }
+            // document.addEventListener('mousemove',(e) =>{
+            //     let data = {}
+            //     //获取当前屏幕的实际 x y
+            //     data.clientX = e.clientX
+            //     data.clientY = e.clientY
+            //     const videoWidth = videoTag.getBoundingClientRect().width
+            //     const videoHeight = videoTag.getBoundingClientRect().height
+            //     data.video = {
+            //         //控制端的真实宽高
+            //         width:videoWidth,
+            //         height:videoHeight
+            //     }
 
-                peer.emit('robot' , 'move' ,data)
-            })
+            //     peer.emit('robot' , 'move' ,data)
+            // })
         },
         //播放视频流
         paly(stream){

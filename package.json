@@ -7,7 +7,9 @@
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
-    "dist-mac": "yarn compile && electron-builder --mac -c.compression=store"
+    "dist-mac": "yarn compile && electron-builder --mac -c.compression=store",
+    "rebuild": ".\\node_modules\\.bin\\electron-rebuild.cmd",
+    "rebuilds": "npm rebuild --runtime=electron --target=8.2.0 --disturl=https://atom.io/download/atom-shell --abi=72"
   },
   "build": {
     "appId": "com.appid.www",
@@ -55,10 +57,12 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "electron": "8.2.0",
     "electron-builder": "^22.4.1",
+    "electron-rebuild": "^2.3.2",
     "electron-webpack": "^2.8.2",
     "electron-webpack-vue": "^2.4.0",
     "sass": "^1.26.3",
     "sass-loader": "^8.0.2",
+    "systeminformation": "^4.30.4",
     "vue": "^2.6.10",
     "vue-router": "^3.1.3",
     "webpack": "~4.42.1",

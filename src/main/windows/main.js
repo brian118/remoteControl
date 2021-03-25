@@ -16,12 +16,13 @@ export function create(){
     })
 
     win.on('close' , e =>{
-        if(willQuitaApp){
-            win = null
-        }else{
-            e.preventDefault()
-            win.hide()
-        }
+        win = null
+        // if(willQuitaApp){
+        //     win = null
+        // }else{
+        //     e.preventDefault()
+        //     win.hide()
+        // }
     })
 
     if (isDev) {

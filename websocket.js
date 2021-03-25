@@ -39,7 +39,7 @@ wss.on('connection' , function connection (ws , request){
         }
 
         //事件名，参数
-        let {event , data} = parseMsg
+        let {event , data } = parseMsg
         
         //触发登录
         if(event === 'login'){
@@ -47,12 +47,13 @@ wss.on('connection' , function connection (ws , request){
             ws.sendData('logined' , {code})
         }else if(event === 'control'){      //触发控制
             let remote = +data.remote
-            console.log("传来的remote",remote)
+            let url = data.url
+            console.log("传来的remote",remote , url)
 
             //检查是否包含已登录的控制码
             if(code2ws.has(remote)){
                 //进行连接
-                ws.sendData('controlled',{remote})
+                ws.sendData('controlled',{remote,url})
                 ws.sendRemote = code2ws.get(remote).sendData
                 code2ws.get(remote).sendRemote = ws.sendData
                 ws.sendRemote('be-controlled',{remote:code})
